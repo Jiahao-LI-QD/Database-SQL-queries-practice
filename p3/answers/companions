@@ -1,0 +1,11 @@
+﻿ companion1 |    fname    |  realm   | companion2 |   lname    
+------------+-------------+----------+------------+------------
+ carter     | Lucille     | Buffalo  | thunder    | Gareth
+ coder      | Rhonda      | Buffalo  | json       | Andrea
+ coder      | Rhonda      | Buffalo  | skills     | Haks
+ dazzle     | Landshark   | Buffalo  | ollie      | Ralf
+ json       | Andrea      | Buffalo  | skills     | Haks
+ pirate     | Snaps       | Buffalo  | tizdale    | Ged
+ ⋮
+(43 rows)
+

@@ -1,0 +1,16 @@
+with 
+a (theme, quests) as
+(select theme, count(*)
+from quest
+group by theme),
+b (theme) as
+(select theme
+from quest
+except
+select theme
+from quest
+where succeeded is NULL)
+select distinct b.theme, a.quests
+from b, a
+where b.theme = a.theme
+order by theme;

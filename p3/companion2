@@ -1,0 +1,87 @@
+with
+c (login, name, day, realm, theme) as
+(select v.login, v.name, v.day, v.realm, a.theme
+from visit v, actor a
+where v.realm = a.realm
+and v.day = a.day
+and v.login= a.login),
+
+p (companion1, fname, realm, day, theme, companion2, lname) as
+(select c1.login as companion1, c1.name as fname, c1.realm, c1.day, c1.theme, c2.login as companion2, c2.name as lname
+from c c1, c c2
+where c1.realm = c2.realm
+and c1.day = c2.day
+and c1.theme = c2.theme
+and c1.login <= c2.login),
+
+com1 (companion1, fname, realm, day, theme, companion2, lname) as
+(select p1.companion1, p1.fname, p1.realm, p1.day, p1.theme, p2.companion2, p2.lname
+from 
+(select distinct companion1, fname, realm, day, theme
+from p) as p1, 
+(select distinct companion1, fname, realm, companion2, lname
+from p) as p2
+where p1.companion1 = p2.companion1
+and p1.fname= p2.fname
+and p1.realm = p2.realm),
+
+v (companion1, fname, realm, day, theme, companion2, lname) as
+(select c1.login as companion1, c1.name as fname, c1.realm, c1.day, c1.theme, c2.login as companion2, c2.name as lname
+from c c1, c c2
+where c1.realm = c2.realm
+and c1.day = c2.day
+and c1.theme = c2.theme
+and c1.login >= c2.login),
+
+com2 (companion1, fname, realm, day, theme, companion2, lname) as
+(select v1.companion1, v1.fname, v1.realm, v1.day, v1.theme, v2.companion2, v2.lname
+from 
+(select distinct companion1, fname, realm, day, theme
+from v) as v1, 
+(select distinct companion1, fname, realm, companion2, lname
+from v) as v2
+where v1.companion1 = v2.companion1
+and v1.fname= v2.fname
+and v1.realm = v2.realm),
+
+f1 (companion1, fname, realm, companion2, lname) as
+(select distinct companion1, fname, realm, companion2, lname 
+from p
+where (companion2, lname) not in
+(select distinct p3.companion2, p3.lname
+from (select day, theme, companion2, lname from com1
+where com1.companion1 = p.companion1
+and com1.fname = p.fname
+and com1.realm = p.realm
+except
+select day, theme, companion2, lname
+from p as p4
+where p4.companion1 = p.companion1
+and p4.fname = p.fname
+and p4.realm = p.realm) as p3) ),
+
+f2 (companion1, fname, realm, companion2, lname) as
+(select distinct companion1, fname, realm, companion2, lname 
+from v
+where (companion2, lname) not in
+(select distinct v3.companion2, v3.lname
+from (select day, theme, companion2, lname from com2
+where com2.companion1 = v.companion1
+and com2.fname = v.fname
+and com2.realm = v.realm
+except
+select day, theme, companion2, lname
+from v as v4
+where v4.companion1 = v.companion1
+and v4.fname = v.fname
+and v4.realm = v.realm) as v3) )
+
+select f1.companion1, f1.fname, f1.realm, f1.companion2, f1.lname
+from f1, f2
+where f1.companion1 = f2.companion2
+and f1.fname = f2.lname
+and f1.realm = f2.realm
+and f1.companion2 = f2.companion1
+and f1.lname = f2.fname
+and f1.companion1 <> f1.companion2
+order by realm, companion1, fname, companion2, lname;

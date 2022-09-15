@@ -1,0 +1,1 @@
+For table Timeslot, it has key attribute `time`. The required output example is “3:00pm 25 September 2020”. If we want to declare timestamp as the variable type, we can't get the same output unless we modify the DateStyle parameter in the postgresql.conf configuration file.

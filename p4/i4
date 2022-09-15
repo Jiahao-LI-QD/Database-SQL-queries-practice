@@ -1,0 +1,4 @@
+select A, (select B 
+           from T as t1 
+           where t1.A > t2.A) 
+from   T as t2;

@@ -1,0 +1,7 @@
+select distinct actor.login, name, day, realm, theme from player, actor
+where actor.login = player.login and (actor.login, actor.day) in
+(select login, day
+from actor
+group by login, day
+having count(*) > 1)
+order by login, name, day, realm, theme;

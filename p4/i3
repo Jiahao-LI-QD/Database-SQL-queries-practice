@@ -1,0 +1,6 @@
+select t2.A, t2.B
+from  (select min(B) as B
+       from T 
+      ) as t1,
+      T as t2
+where t1.B = t2.B;

@@ -1,0 +1,171 @@
+insert into person (sin, name, phone, address) values
+	(900000001, 'Ian', 	4380001111,	'Aldwinckle Heights 20 North York, ON M3J 3S6'),
+	(900000002, 'Leo', 	4380002222,	'5800 Yonge St North York, ON M2M 3T3'),
+	(900000003, 'Shawn', 	4370003333,	'Steeles Ave W North York, ON M3J 2P1'),
+	(900000004, 'Bruce', 	4370004444,	'20 Hackett Ave North York, ON M3J 0C7'),
+	(200000001, 'trump', 	4370005555,	'560 Van Horne Ave North York, ON M2J 2V3'),
+	(200000002, 'Peter', 	4370006666,	'335 Carrier Crescent Maple, ON L6A 0N8');
+
+insert into method (method) values
+	('contact-tracing phone app'),
+	('surveillance camera'),
+	('registry sign in'),
+	('registry sign out');
+
+insert into Timeslot (time) values
+	('12:15pm 15 March 2020'),
+	('12:30pm 15 March 2020'),
+	('12:00pm 12 April 2020'),
+	('10:00pm 12 April 2020'),
+	('3:45pm 17 May 2020'),
+	('4:00pm 17 May 2020'),
+	('2:15pm 20 July 2020'),
+	('2:30pm 20 July 2020'),
+	('2:45pm 20 July 2020'),
+	('3:15pm 30 September 2020'),
+	('3:30pm 30 September 2020'),
+	('10:45am 10 October 2020'),
+	('11:00am 10 October 2020'),
+	('11:00am 20 October 2020'),
+	('11:30am 20 October 2020');
+
+insert into Place (name, gps, description, address) values
+	('York University Keele Campus', 	'43.773887, -79.502015',
+	'Yorku education stitution',		'4700 Keele Street, Toronto ON M2J 1P3'),
+	('T&T Supermarket', 			'43.808154, -79.451926',
+	'Supermarket located in Richmond Hill', '1 Promenade Cir, Thornhill, ON L4J 4P8'),
+	('Costco Wholesale', 			'43.789834, -79.541438',
+	'Supermarket located at RioCan Colossus Centre', '71 Colossus Dr, Woodbridge, ON L4L 9J8'),
+	('North York General Hospital', 	'43.769168, -79.362721',
+	'24 hours hospital in North York', 	'4001 Leslie St, North York, ON M2K 1E1'),
+	('St. Joseph''s Health Centre, Toronto', '43.640649, -79.450346',
+	'24 hours hospital, COVID-19 testing center in York', '30 The Queensway, Toronto, ON M6R 1B5'),
+	('Michael Garron Hospital', 		'43.690117, -79.325031',
+	'24 hours hospital, COVID-19 testing center in East York', '825 Coxwell Ave, East York, ON M4C 3E7');
+
+insert into Testcentre (testcentre) values
+	('North York General Hospital'),
+	('St. Joseph''s Health Centre, Toronto'),
+	('Michael Garron Hospital');
+
+insert into Testtype (testtype) values
+	('blood test'),
+	('PCR test'),
+	('Rapid antigen test');
+
+insert into Action (action) values
+	('self-quarantine'),
+	('quarantine in hospital'),
+	('negative - no action');
+
+insert into Bubble (p1, p2) values
+	(900000001, 900000002),
+	(900000001, 900000003),
+	(900000001, 200000001),
+	(900000001, 200000002),
+	(900000002, 900000003);
+	
+insert into Offer (testcentre, testtype) values
+	('Michael Garron Hospital',		'PCR test'),
+	('Michael Garron Hospital', 		'Rapid antigen test'),
+	('St. Joseph''s Health Centre, Toronto', 'Rapid antigen test'),
+	('North York General Hospital', 	'blood test'),
+	('North York General Hospital', 	'Rapid antigen test');
+
+insert into Test (sin, time, testcentre, testtype, action) values
+	(900000001, '3:45pm 17 May 2020', 'North York General Hospital',
+	'blood test',		'negative - no action'),
+	(900000001, '2:15pm 20 July 2020', 'North York General Hospital',
+	'Rapid antigen test',	'negative - no action'),
+	(900000002, '2:15pm 20 July 2020', 'North York General Hospital',
+	'Rapid antigen test',	'negative - no action'),
+	(900000003, '2:30pm 20 July 2020', 'St. Joseph''s Health Centre, Toronto',
+	'Rapid antigen test',	'negative - no action'),
+	(200000002, '2:30pm 20 July 2020', 'St. Joseph''s Health Centre, Toronto',
+	'Rapid antigen test',	'self-quarantine'),
+	(200000001, '3:15pm 30 September 2020', 'Michael Garron Hospital',
+	'Rapid antigen test',	'quarantine in hospital'),
+	(200000001, '10:45am 10 October 2020', 'Michael Garron Hospital',
+	'PCR test',		'quarantine in hospital'),
+	(900000003, '11:00am 20 October 2020', 'St. Joseph''s Health Centre, Toronto',
+	'Rapid antigen test',	NULL);
+
+insert into Recon (sin, time, placename, method) values
+	(900000001, '12:15pm 15 March 2020', 'York University Keele Campus',
+	'surveillance camera'),
+	(900000002, '12:15pm 15 March 2020', 'York University Keele Campus',
+	'surveillance camera'),
+	(900000003, '12:15pm 15 March 2020', 'York University Keele Campus',
+	'surveillance camera'),
+	(900000004, '12:15pm 15 March 2020', 'York University Keele Campus',
+	'surveillance camera'),
+	(200000002, '12:15pm 15 March 2020', 'York University Keele Campus',
+	'surveillance camera'),
+	(200000002, '12:30pm 15 March 2020', 'York University Keele Campus',
+	'surveillance camera'),
+	(900000001, '12:00pm 12 April 2020', 'T&T Supermarket',
+	'surveillance camera'),
+	(900000002, '12:00pm 12 April 2020', 'T&T Supermarket',
+	'surveillance camera'),
+	(200000002, '12:00pm 12 April 2020', 'T&T Supermarket',
+	'surveillance camera'),
+	(900000001, '10:00pm 12 April 2020', 'Costco Wholesale',
+	'contact-tracing phone app'),
+	(900000004, '10:00pm 12 April 2020', 'Costco Wholesale',
+	'contact-tracing phone app'),
+	(200000002, '10:00pm 12 April 2020', 'Costco Wholesale',
+	'contact-tracing phone app'),
+	(900000001, '10:00pm 12 April 2020', 'Costco Wholesale',
+	'surveillance camera'),
+	(900000004, '10:00pm 12 April 2020', 'Costco Wholesale',
+	'surveillance camera'),
+	(200000002, '10:00pm 12 April 2020', 'Costco Wholesale',
+	'surveillance camera'),
+	(900000001, '3:45pm 17 May 2020', 'North York General Hospital',
+	'registry sign in'),
+	(900000001, '3:45pm 17 May 2020', 'North York General Hospital',
+	'surveillance camera'),
+	(900000001, '4:00pm 17 May 2020', 'North York General Hospital',
+	'registry sign out'),
+	(900000001, '2:15pm 20 July 2020', 'North York General Hospital',
+	'registry sign in'),
+	(900000001, '2:15pm 20 July 2020', 'North York General Hospital',
+	'surveillance camera'),
+	(900000001, '2:30pm 20 July 2020', 'North York General Hospital',
+	'registry sign out'),
+	(900000002, '2:15pm 20 July 2020', 'North York General Hospital',
+	'registry sign in'),
+	(900000002, '2:15pm 20 July 2020', 'North York General Hospital',
+	'surveillance camera'),
+	(900000002, '2:30pm 20 July 2020', 'North York General Hospital',
+	'registry sign out'),
+	(900000003, '2:30pm 20 July 2020', 'St. Joseph''s Health Centre, Toronto',
+	'registry sign in'),
+	(900000003, '2:45pm 20 July 2020', 'St. Joseph''s Health Centre, Toronto',
+	'registry sign out'),
+	(200000002, '2:30pm 20 July 2020', 'St. Joseph''s Health Centre, Toronto',
+	'registry sign in'),
+	(200000002, '2:45pm 20 July 2020', 'St. Joseph''s Health Centre, Toronto',
+	'registry sign out'),
+	(200000001, '3:15pm 30 September 2020', 'Michael Garron Hospital',
+	'registry sign in'),
+	(200000001, '3:15pm 30 September 2020', 'Michael Garron Hospital',
+	'contact-tracing phone app'),
+	(200000001, '3:15pm 30 September 2020', 'Michael Garron Hospital',
+	'surveillance camera'),
+	(200000001, '3:30pm 30 September 2020', 'Michael Garron Hospital',
+	'registry sign out'),
+	(200000001, '10:45am 10 October 2020', 'Michael Garron Hospital',
+	'registry sign in'),
+	(200000001, '11:00am 10 October 2020', 'Michael Garron Hospital',
+	'contact-tracing phone app'),
+	(200000001, '11:00am 10 October 2020', 'Michael Garron Hospital',
+	'surveillance camera'),
+	(200000001, '11:00am 10 October 2020', 'Michael Garron Hospital',
+	'registry sign out'),
+	(900000003, '11:00am 20 October 2020', 'St. Joseph''s Health Centre, Toronto',
+	'registry sign in'),
+	(900000003, '11:30am 20 October 2020', 'St. Joseph''s Health Centre, Toronto',
+	'registry sign out');
+
+	

@@ -1,0 +1,5 @@
+select A, B 
+from   T as t1 
+where  B not in (select B 
+                from T as T2 
+                where t1.A < t2.A);

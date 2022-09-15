@@ -1,0 +1,24 @@
+with
+
+a (login) as 
+(select login
+from
+(select login, gender
+from avatar
+except
+select login, gender
+from player) as l),
+--select p.login
+--from player p, avatar a
+--where p.login = a.login
+--and p.gender <> a.gender
+b (login, avatars) as
+(select login, count(*)
+from avatar
+group by login)
+
+select distinct player.login, player.name, player.gender, avatars
+from player, a, b
+where player.login = a.login
+and player.login = b.login
+order by login;

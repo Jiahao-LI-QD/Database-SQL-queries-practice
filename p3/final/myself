@@ -1,0 +1,4 @@
+select login, name, gender, address,joined
+from player
+where name ilike concat('%' , login , '%')
+order by login asc;

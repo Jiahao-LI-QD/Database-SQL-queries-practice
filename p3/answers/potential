@@ -1,0 +1,17 @@
+﻿  login   |    name     |    race    | earned | quests 
+----------+-------------+------------+--------+--------
+ agnetha  | Flit        | faerie     |  11486 |      4
+ agnetha  | Flutter Shy | faerie     |   1590 |      4
+ agnetha  | Whisp       | faerie     |  12946 |      8
+ astral   | Elphaba     | wizard     |   6005 |      9
+ astral   | Lightning   | raccoon    | 113378 |      7
+ bobby    | Smiley      | shark      |  14590 |      8
+ bobby    | Steve       | wizard     |   3021 |      4
+ bobby    | Wayne       | footballer |   2590 |      5
+ cait     | Cait        | raccoon    |  30896 |     19
+ carter   | Belle       | shark      | 102625 |      4
+ carter   | Lucille     | footballer |   1398 |      6
+ carter   | Tony        | faerie     | 103438 |      7
+ ⋮
+(80 rows)
+

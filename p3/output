@@ -1,0 +1,47 @@
+ companion1 |    fname    |  realm   | companion2 |   lname    
+------------+-------------+----------+------------+------------
+ carter     | Lucille     | Buffalo  | thunder    | Gareth
+ coder      | Rhonda      | Buffalo  | json       | Andrea
+ coder      | Rhonda      | Buffalo  | skills     | Haks
+ dazzle     | Landshark   | Buffalo  | ollie      | Ralf
+ json       | Andrea      | Buffalo  | skills     | Haks
+ pirate     | Snaps       | Buffalo  | tizdale    | Ged
+ bobby      | Steve       | Camelot  | macho      | Kawaii
+ carter     | Belle       | Camelot  | cash       | Roads
+ carter     | Tony        | Camelot  | growley    | Rocky
+ carter     | Tony        | Camelot  | hazard     | Incisor
+ carter     | Tony        | Camelot  | horton     | Dumbledore
+ cash       | Barack      | Camelot  | skills     | Blue Ant
+ coder      | Pele        | Camelot  | horton     | Zinedine
+ growley    | Rocky       | Camelot  | hazard     | Incisor
+ growley    | Rocky       | Camelot  | horton     | Dumbledore
+ hazard     | Incisor     | Camelot  | horton     | Dumbledore
+ json       | Tracy       | Camelot  | skills     | Martian
+ trudie     | Reni        | Camelot  | zedster    | Marvin
+ trudie     | Reni        | Camelot  | zoood      | Sherlock
+ zedster    | Marvin      | Camelot  | zoood      | Sherlock
+ agnetha    | Flit        | The Deep | thunder    | Zlatan
+ astral     | Elphaba     | The Deep | carter     | Belle
+ bobby      | Wayne       | The Deep | hazard     | Robby
+ hazard     | Incisor     | The Deep | macho      | Kawaii
+ horton     | Zinedine    | The Deep | tizdale    | Frenzy
+ json       | Stills      | The Deep | pirate     | Snaps
+ macho      | Bash        | The Deep | surfette   | Zerf
+ surfette   | Mia         | The Deep | thedba     | Sandra Dee
+ agnetha    | Flutter Shy | Valhalla | lioness    | Donatella
+ agnetha    | Flutter Shy | Valhalla | macho      | Scream
+ dougy      | Zounds      | Valhalla | hills      | Fluffs
+ dougy      | Zounds      | Valhalla | tizdale    | Ged
+ hills      | Fluffs      | Valhalla | tizdale    | Ged
+ lioness    | Donatella   | Valhalla | macho      | Scream
+ storm      | Lazarus     | Valhalla | thedba     | Hermione
+ bobby      | Steve       | Walmart  | hazard     | Robby
+ bobby      | Wayne       | Walmart  | hazard     | Toothless
+ carter     | Belle       | Walmart  | zoood      | Smiley
+ carter     | Lucille     | Walmart  | macho      | Kawaii
+ coder      | Pele        | Walmart  | horton     | Hops
+ hills      | Ged         | Walmart  | storm      | Lazarus
+ hills      | Razor       | Walmart  | trudie     | Bonk
+ lioness    | Pilot       | Walmart  | macho      | Bash
+(43 rows)
+

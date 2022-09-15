@@ -1,0 +1,7 @@
+select distinct theme, day, realm, succeeded
+from quest
+where (theme, day, realm) not in
+(select theme, day, realm
+from quest
+where succeeded < '20:00:00')
+order by theme, day, realm;

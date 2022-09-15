@@ -1,0 +1,10 @@
+package p4;
+
+public class CreateQuest {
+
+	public static void main(String[] args) {
+		
+
+	}
+
+}

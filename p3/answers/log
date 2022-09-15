@@ -1,0 +1,2 @@
+psql -h db -U jiahao18 -d jiahao18
+

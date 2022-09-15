@@ -1,0 +1,16 @@
+with 
+a (login, realm, visits) as
+(select distinct login, realm, count(*) as visits
+from visit
+group by login, realm
+having count(*) > 1
+order by login, realm),
+b (login,realm, days) as
+(select distinct login, realm, max(day) - min(day) as days
+from visit
+group by login, realm)
+select distinct a.login, a.realm, a.visits, cast(cast(b.days as float) / (a.visits - 1) as numeric(5,2)) as frequency
+from a, b
+where a.login = b.login
+and a.realm = b.realm
+order by login, realm;

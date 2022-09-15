@@ -1,0 +1,38 @@
+with
+v (login, loot_id, day, realm, theme, sql) as
+(select l.login, loot_id,day, realm, theme, sql
+from loot l , treasure t
+where l.treasure = t.treasure),
+m (day, realm, theme, msql) as
+(select day, realm, theme, max(sql) msql
+from v
+group by day, realm, theme),
+f (login, day, realm, theme, sql) as
+(select a.login, a.day, a.realm, a.theme, m.msql
+from actor a, m, quest q
+where a.day = m.day
+and a.realm = m.realm
+and a.theme = m.theme
+and a.day = q.day
+and a.realm = q.realm
+and a.theme = q.theme
+and q.succeeded is not null
+order by login),
+y (login, day, realm, theme, sql, name) as
+(select f.*, i.name
+from f, visit i
+where i.login = f.login
+and i.realm = f.realm
+and f.day = i.day),
+s (login, name, earned, quests) as
+(select login, name, sum(sql) as earned,count(*) as quests
+from y
+where (login, name) in (select login, name from avatar)
+group by login, name)
+select av.login, av.name, av.race, COALESCE(earned,0) as earned, COALESCE(quests,0) as quests
+from avatar av left join s
+on s.login = av.login
+and s.name = av.name 
+order by login, name;
+
+

@@ -1,0 +1,38 @@
+with
+n (login, name, day, realm, theme, race, gender) as
+(select v.login, v.name, v.day, v.realm, a.theme, av.race, av.gender
+from visit v, actor a, avatar av
+where v.realm = a.realm
+and v.day = a.day
+and v.login= a.login
+and v.login = av.login
+and v.name = av.name),
+
+s (login, realm, theme, day, sql) as
+(select l.login, l.realm, l.theme, l.day,t.sql
+from loot l, treasure t
+where t.treasure = l.treasure
+and l.login is not null),
+
+su (login  , name,  race ,gender , realm , day,theme, sql) as
+(select s.login, n.name, n.race, n.gender, s.realm, s.day, s.theme, s.sql
+from n, s
+where n.realm = s.realm
+and n.day = s.day
+and n.theme = s.theme
+and n.login = s.login
+order by realm, name),
+
+m (realm, race, gender, total) as
+(select realm, race, gender, sum(sql) as total
+from su
+group by realm, race, gender)
+
+select m.realm, m.race, m.gender, m.total
+from m, 
+(select realm, race, max(total) as total
+from m group  by realm, race) as ma
+where m.realm = ma.realm
+and m.race = ma.race
+and m.total = ma.total
+order by realm, race, gender;

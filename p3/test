@@ -1,0 +1,62 @@
+with
+c (login, name, day, realm, theme) as
+(select v.login, v.name, v.day, v.realm, a.theme
+from visit v, actor a
+where v.realm = a.realm
+and v.day = a.day
+and v.login= a.login),
+
+sq (login, name, realm, sq) as
+(select login, name, realm, count(*) as sq
+from c
+group by login, name, realm),
+
+can (companion1, fname, realm, companion2, lname) as
+(select sq1.login companion1, sq1.name as fname, sq1.realm, sq2.login companion2, sq2.name lname
+from sq sq1, sq sq2
+where sq1.login <> sq2.login
+and sq1.sq = sq2.sq
+and sq1.realm = sq2.realm),
+
+p (companion1, fname, realm, day, theme, companion2, lname) as
+(select c1.login as companion1, c1.name as fname, c1.realm, c1.day, c1.theme, c2.login as companion2, c2.name as lname
+from c c1, c c2
+where c1.realm = c2.realm
+and c1.day = c2.day
+and c1.theme = c2.theme
+and c1.login <> c2.login),
+
+com (companion1, fname, realm, day, theme, companion2, lname) as
+(select p1.companion1, p1.fname, p1.realm, p1.day, p1.theme, p2.companion2, p2.lname
+from 
+(select distinct companion1, fname, realm, day, theme
+from p) as p1, 
+(select distinct companion1, fname, realm, companion2, lname
+from p) as p2
+where p1.companion1 = p2.companion1
+and p1.fname= p2.fname
+and p1.realm = p2.realm),
+
+
+f1 (companion1, fname, realm, companion2, lname) as
+(select distinct companion1, fname, realm, companion2, lname 
+from p
+where (companion2, lname) not in
+(select companion2, lname 
+from
+(select day, theme, companion2, lname 
+from com
+where com.companion1 = p.companion1
+and com.fname = p.fname
+and com.realm = p.realm
+except
+select day, theme, companion2, lname
+from p as p4
+where p4.companion1 = p.companion1
+and p4.fname = p.fname
+and p4.realm = p.realm) as list))
+
+select * from
+(select * from can intersect select * from f1) as la
+where companion1 < companion2
+order by realm, companion1, fname, companion2, lname;

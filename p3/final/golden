@@ -1,0 +1,8 @@
+select distinct realm, day, theme
+from quest
+where (succeeded is not NULL) and (realm, day, theme) in
+(select realm, day, theme
+from loot
+where treasure like '%Gold%')
+order by day, realm, theme;
+

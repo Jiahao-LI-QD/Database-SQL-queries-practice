@@ -1,0 +1,13 @@
+create trigger AddPastry 
+ before insert on T   
+ referencing              
+     new row as S         
+ for each row             
+ when (                   
+     S.a not in (    
+             select name  
+            from T.a  
+         )                
+ )                        
+ insert into T      
+ values (S.a); 

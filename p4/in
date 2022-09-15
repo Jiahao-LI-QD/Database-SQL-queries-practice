@@ -1,0 +1,11 @@
+create table T (
+A int primary key,
+B int);
+
+insert into T (A,B) values 
+(1,5),
+(2,7),
+(3,2),
+(4,4),
+(5,6);
+

@@ -1,0 +1,379 @@
+
+import java.util.*;
+import java.net.*;
+import java.text.*;
+import java.lang.*;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.sql.*;
+import java.util.Date;
+//import pgpass.*;
+/*============================================================================
+CLASS CreateQuest
+============================================================================*/
+
+public class CreateQuest {
+    private Connection conDB;   // Connection to the database system.
+    private String url;         // URL: Which database?
+
+    private Integer custID;     // Who are we tallying?
+    private String  custName;   // Name of that customer.
+    private String  user = "jiahao18";
+    private String  passwd;
+    private List<String> ls;
+    private Date date;
+
+    // Constructor
+    public CreateQuest (String[] args) {
+        // Set up the DB connection.
+        try {
+            // Register the driver with DriverManager.
+            Class.forName("org.postgresql.Driver").newInstance();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.exit(0);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            System.exit(0);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+
+        if (args.length >= 5){
+           user = args[4];
+        }
+        date = new Date();
+        ls = new LinkedList<String>();
+//        passwd = PgPass.get("db", "*", user, user);
+        passwd = "216263949";
+        // URL: Which database?
+        url = "jdbc:postgresql://db:5432/";
+
+        // Initialize the connection.
+        try {
+            // Connect with a fall-thru id & password
+            conDB = DriverManager.getConnection(url, user, passwd);
+        } catch(SQLException e) {
+            System.out.print("\nSQL: database connection error.\n");
+            System.out.println(e.toString());
+            System.exit(0);
+        }    
+
+        // Let's have autocommit turned off.  No particular reason here.
+        try {
+            conDB.setAutoCommit(false);
+        } catch(SQLException e) {
+            System.out.print("\nFailed trying to turn autocommit off.\n");
+            e.printStackTrace();
+            System.exit(0);
+        }    
+
+        // Who are we tallying?
+        if (args.length < 4) {
+            // Don't know what's wanted.  Bail.
+            System.out.println("\nUsage: java CreateQuest input #parameters is wrong");
+            System.exit(0);
+        } else {
+            try {
+                custID = new Integer(args[0]);
+            } catch (NumberFormatException e) {
+                System.out.println("\nUsage: java CreateQuest cust#");
+                System.out.println("Provide an INT for the cust#.");
+                System.exit(0);
+            }
+        }
+
+        if (args.length >= 6) {
+            setseed(args[5]);
+         }
+        // Is this custID for real?
+        if (!lootCheck()) {
+            System.out.print("There is no customer #");
+            System.out.print(custID);
+            System.out.println(" in the database.");
+            System.out.println("Bye.");
+            System.exit(0);
+        }
+
+        // Report total sales for this customer.
+        reportSalesForCustomer();
+
+        // Commit.  Okay, here nothing to commit really, but why not...
+        try {
+            conDB.commit();
+        } catch(SQLException e) {
+            System.out.print("\nFailed trying to commit.\n");
+            e.printStackTrace();
+            System.exit(0);
+        }    
+        // Close the connection.
+        try {
+            conDB.close();
+        } catch(SQLException e) {
+            System.out.print("\nFailed trying to close the connection.\n");
+            e.printStackTrace();
+            System.exit(0);
+        }    
+
+    }
+    
+    public void setseed(String s) {
+    	String            queryText = "";     // The SQL text.
+        PreparedStatement querySt   = null;   // The query handle.
+        ResultSet         answers   = null;   // A cursor.
+
+        queryText =
+            "select setseed( ? );";
+
+        // Prepare the query.
+        try {
+            querySt = conDB.prepareStatement(queryText);
+        } catch(SQLException e) {
+            System.out.println("SQL#2 failed in prepare");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Execute the query.
+        try {
+            querySt.setString(1, s);
+            answers = querySt.executeQuery();
+        } catch(SQLException e) {
+            System.out.println("SQL#2 failed in execute");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Close the cursor.
+        try {
+            answers.close();
+        } catch(SQLException e) {
+            System.out.print("SQL#2 failed closing cursor.\n");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // We're done with the handle.
+        try {
+            querySt.close();
+        } catch(SQLException e) {
+            System.out.print("SQL#2 failed closing the handle.\n");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+    }
+    
+
+    
+    public boolean dateCheck() {
+        String            queryText = "";     // The SQL text.
+        PreparedStatement querySt   = null;   // The query handle.
+        ResultSet         answers   = null;   // A cursor.
+
+        boolean           inDB      = false;  // Return.
+
+        queryText =
+            "SELECT name       "
+          + "FROM yrb_customer "
+          + "WHERE cid = ?     ";
+
+        // Prepare the query.
+        try {
+            querySt = conDB.prepareStatement(queryText);
+        } catch(SQLException e) {
+            System.out.println("SQL#1 failed in prepare");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Execute the query.
+        try {
+            querySt.setInt(1, custID.intValue());
+            answers = querySt.executeQuery();
+        } catch(SQLException e) {
+            System.out.println("SQL#1 failed in execute");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Any answer?
+        try {
+            if (answers.next()) {
+                inDB = true;
+                custName = answers.getString("name");
+            } else {
+                inDB = false;
+                custName = null;
+            }
+        } catch(SQLException e) {
+            System.out.println("SQL#1 failed in cursor.");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Close the cursor.
+        try {
+            answers.close();
+        } catch(SQLException e) {
+            System.out.print("SQL#1 failed closing cursor.\n");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // We're done with the handle.
+        try {
+            querySt.close();
+        } catch(SQLException e) {
+            System.out.print("SQL#1 failed closing the handle.\n");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        return inDB;
+    }
+    
+    public boolean lootCheck() {
+        String            queryText = "";     // The SQL text.
+        PreparedStatement querySt   = null;   // The query handle.
+        ResultSet         answers   = null;   // A cursor.
+
+        boolean           inDB      = false;  // Return.
+
+        queryText =
+            "SELECT name       "
+          + "FROM yrb_customer "
+          + "WHERE cid = ?     ";
+
+        // Prepare the query.
+        try {
+            querySt = conDB.prepareStatement(queryText);
+        } catch(SQLException e) {
+            System.out.println("SQL#1 failed in prepare");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Execute the query.
+        try {
+            querySt.setInt(1, custID.intValue());
+            answers = querySt.executeQuery();
+        } catch(SQLException e) {
+            System.out.println("SQL#1 failed in execute");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Any answer?
+        try {
+            if (answers.next()) {
+                inDB = true;
+                custName = answers.getString("name");
+            } else {
+                inDB = false;
+                custName = null;
+            }
+        } catch(SQLException e) {
+            System.out.println("SQL#1 failed in cursor.");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Close the cursor.
+        try {
+            answers.close();
+        } catch(SQLException e) {
+            System.out.print("SQL#1 failed closing cursor.\n");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // We're done with the handle.
+        try {
+            querySt.close();
+        } catch(SQLException e) {
+            System.out.print("SQL#1 failed closing the handle.\n");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        return inDB;
+    }
+
+    public void reportSalesForCustomer() {
+        String            queryText = "";     // The SQL text.
+        PreparedStatement querySt   = null;   // The query handle.
+        ResultSet         answers   = null;   // A cursor.
+
+        queryText =
+            "SELECT SUM(P.qnty * O.price) as total          "
+          + "    FROM yrb_purchase P, yrb_offer O           "
+          + "    WHERE P.cid = ?                            "
+          + "      AND P.title = O.title AND P.year = O.year";
+
+        // Prepare the query.
+        try {
+            querySt = conDB.prepareStatement(queryText);
+        } catch(SQLException e) {
+            System.out.println("SQL#2 failed in prepare");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Execute the query.
+        try {
+            querySt.setInt(1, custID.intValue());
+            answers = querySt.executeQuery();
+        } catch(SQLException e) {
+            System.out.println("SQL#2 failed in execute");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Variables to hold the column value(s).
+        float  sales;
+        
+        DecimalFormat df = new DecimalFormat("####0.00");
+
+        // Walk through the results and present them.
+        try {
+            System.out.print("#");
+            System.out.print(custID);
+            System.out.print(" (" + custName + ") has spent $");
+            if (answers.next()) {
+                sales = answers.getFloat("total");
+                System.out.print(df.format(sales));
+            } else {
+                System.out.print(df.format(0));
+            }
+            System.out.println(".");
+        } catch(SQLException e) {
+            System.out.println("SQL#2 failed in cursor.");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // Close the cursor.
+        try {
+            answers.close();
+        } catch(SQLException e) {
+            System.out.print("SQL#2 failed closing cursor.\n");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+        // We're done with the handle.
+        try {
+            querySt.close();
+        } catch(SQLException e) {
+            System.out.print("SQL#2 failed closing the handle.\n");
+            System.out.println(e.toString());
+            System.exit(0);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        CreateQuest ct = new CreateQuest(args);
+    }
+ }

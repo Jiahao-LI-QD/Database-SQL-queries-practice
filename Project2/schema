@@ -1,0 +1,114 @@
+-- Project #2 for EECS 3421B 2020W
+-- Created by Jiahao LI
+-- Student number 216263949
+-- ================================
+
+create table Person (
+	sin numeric(9) not null,
+	name varchar(30),
+	address varchar(100),
+	phone numeric(10) not null,
+	constraint person_pk
+		primary key (sin)
+);
+
+create table Place (
+	name varchar(50) not null,
+	gps varchar(50),
+	description varchar(100),
+	address varchar(100) not null,
+	constraint place_pk
+		primary key (name)
+);
+
+create table Method (
+	method varchar (50) not null,
+	constraint method_pk
+		primary key (method)
+);
+
+create table Testcentre (
+	testcentre varchar(50) not null,
+	constraint testcentre_pk
+		primary key (testcentre),
+	constraint parent_key
+		foreign key (testcentre) references Place (name)
+);
+
+create table Timeslot(
+	time timestamp not null,
+	constraint time_pk
+		primary key (time)
+);
+
+create table Testtype(
+	testtype varchar(30) not null,
+	constraint type_pk
+		primary key (testtype)
+);
+
+create table Action(
+	action varchar(30) not null,
+	constraint ac_pk
+		primary key (action)
+);
+
+create table Recon(
+	sin numeric(9) not null,
+	time timestamp not null,
+	placename varchar(50) not null,
+	method varchar(50) not null,
+	constraint recon_pk
+		primary key (sin, placename, time, method),
+	constraint r_person_key
+		foreign key (sin) references Person,
+	constraint r_time_key
+		foreign key (time) references Timeslot,
+	constraint r_place_key
+		foreign key (placename) references Place (name),
+	constraint r_method_key
+		foreign key (method) references Method
+);
+	
+create table Test(
+	sin numeric(9) not null,
+	time timestamp not null,
+	testcentre varchar(50) not null,
+	testtype varchar(50) not null,
+	action varchar(30),
+	constraint test_pk
+		primary key (sin, time),
+	constraint person_key
+		foreign key (sin) references Person,
+	constraint time_key
+		foreign key (time) references Timeslot,
+	constraint centre_key
+		foreign key (testcentre) references Testcentre,
+	constraint type_key
+		foreign key (testtype) references Testtype,
+	constraint action_key
+		foreign key (action) references Action
+);	
+
+create table Bubble(
+	p1 numeric(9) not null,
+	p2 numeric(9) not null,
+	constraint bubble_pk
+		primary key (p1, p2),
+	constraint p1_key
+		foreign key (p1) references Person(sin),
+	constraint p2_key
+		foreign key (p2) references Person(sin)
+);
+
+create table Offer(
+	testcentre varchar(50) not null,
+	testtype varchar(30) not null,
+	constraint offer_pk
+		primary key (testcentre, testtype),
+	constraint offer_tt_key
+		foreign key (testcentre) references Testcentre,
+	constraint offer_tc_key
+		foreign key (testtype) references Testtype
+);
+

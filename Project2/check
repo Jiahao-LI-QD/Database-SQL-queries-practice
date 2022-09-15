@@ -1,0 +1,12 @@
+    sin    |        time         |             testcentre              |      testtype      |         action         | offered 
+-----------+---------------------+-------------------------------------+--------------------+------------------------+---------
+ 900000001 | 2020-05-17 15:45:00 | North York General Hospital         | blood test         | negative - no action   | yes
+ 900000001 | 2020-07-20 14:15:00 | North York General Hospital         | Rapid antigen test | negative - no action   | yes
+ 900000002 | 2020-07-20 14:15:00 | North York General Hospital         | Rapid antigen test | negative - no action   | yes
+ 900000003 | 2020-07-20 14:30:00 | St. Joseph's Health Centre, Toronto | Rapid antigen test | negative - no action   | yes
+ 200000002 | 2020-07-20 14:30:00 | St. Joseph's Health Centre, Toronto | Rapid antigen test | self-quarantine        | yes
+ 200000001 | 2020-09-30 15:15:00 | Michael Garron Hospital             | Rapid antigen test | quarantine in hospital | yes
+ 200000001 | 2020-10-10 10:45:00 | Michael Garron Hospital             | PCR test           | quarantine in hospital | yes
+ 900000003 | 2020-10-20 11:00:00 | St. Joseph's Health Centre, Toronto | Rapid antigen test |                        | yes
+(8 rows)
+

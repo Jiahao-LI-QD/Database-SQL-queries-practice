@@ -1,0 +1,17 @@
+﻿  login   |  realm   | visits | frequency 
+----------+----------+--------+-----------
+ agnetha  | Buffalo  |      4 |     30.67
+ agnetha  | Camelot  |      4 |     14.33
+ agnetha  | The Deep |      4 |     21.33
+ agnetha  | Valhalla |      9 |      8.88
+ agnetha  | Walmart  |      2 |     28.00
+ astral   | Buffalo  |      3 |     14.00
+ astral   | Camelot  |      5 |     12.00
+ astral   | The Deep |      2 |      6.00
+ astral   | Valhalla |      5 |     19.25
+ astral   | Walmart  |      6 |     17.00
+ bobby    | Buffalo  |      3 |     35.50
+ bobby    | Camelot  |      5 |     12.50
+ ⋮
+(152 rows)
+

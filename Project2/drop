@@ -1,0 +1,12 @@
+drop table Recon;
+drop table Test;
+drop table Offer;
+drop table Bubble;
+drop table Person;
+drop table Method;
+drop table Action;
+drop table Testtype;
+drop table Testcentre;
+drop table Timeslot;
+drop table Place;
+
